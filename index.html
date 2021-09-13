@@ -4,9 +4,46 @@
 <head>
     <meta charset="utf-8">
     <title>hello-wasm example</title>
+    <style>
+        #benchmark {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #benchmark td,
+        #benchmark th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #benchmark tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #benchmark tr:hover {
+            background-color: #ddd;
+        }
+
+        #benchmark th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
+    <table id="benchmark" class="table-fixed">
+        <tr>
+            <th>Bench</th>
+            <th>Rust-Wasm</th>
+            <th>Javascript</th>
+        </tr>
+
+    </table>
     <script>
         function fib(n) {
             if (n <= 1)
@@ -19,16 +56,39 @@
         init()
             .then(() => {
                 // greet("WebAssembly")
-                var  num = 45
-                console.time('rust fibonacci')
-                var a = fibonacci(num)
-                console.log(a)
-                console.timeEnd('rust fibonacci')
-                console.time('js fibonacci')
-                var b = fib(num)
-                console.log(b)
-                console.timeEnd('js fibonacci')
+                // Find a <table> element with id="myTable":
+                var table = document.getElementById("benchmark");
 
+                // Create an empty <tr> element and add it to the 1st position of the table:
+
+                for (let num = 20; num < 40; num++) {
+                    var performance = window.performance;
+                    var t0 = performance.now();
+                    var rust_num = fibonacci(num)
+                    var t1 = performance.now();
+                    var rust = (t1 - t0) + " ms"
+
+                    var performance = window.performance;
+                    var t0 = performance.now();
+                    var js_num = fib(num)
+                    var t1 = performance.now();
+                    var js = (t1 - t0) + " ms"
+
+                    var row = table.insertRow();
+
+                    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+                    var bench_cell = row.insertCell(0);
+                    var rust_cell = row.insertCell(1);
+                    var js_cell = row.insertCell(2);
+
+                    // Add some text to the new cells:
+                    bench_cell.innerHTML = "fibonacci(" + num + ") = "+rust_num+"(rs)   "+js_num+"(js)";
+                    rust_cell.innerHTML = rust;
+                    js_cell.innerHTML = js;
+                    console.log(num)
+                    setTimeout(function () {
+                    }, 1000);
+                }
             });
     </script>
 </body>
