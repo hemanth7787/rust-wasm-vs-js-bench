@@ -1,5 +1,7 @@
 # rust-wasm-vs-js-bench
 
+# Disclaimer:  Recursive function used, so the results might not be a fair comparison!.
+
 Test in your browser: [Demo](https://hemanth7787.github.io/rust-wasm-vs-js-bench/).
 
 
